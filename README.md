@@ -8,14 +8,11 @@ Sentrion is a student-built prototype for small-business finance workflows, with
 
 - **Competition track:** International Track — “AI as a Financial Participant”
 - **Relevant topic:** Topic E — SME Finance Copilot
-- **Repository URL:** `TODO: insert the public GitHub repository URL before submission`
+- **Repository URL:** https://github.com/felix8891/Sentrion
 - **Build represented by this archive:** local Sentrion MVP with vendor-resolution and PO-relinking revision
 - **Hosted demo URL:** no verified hosted deployment is included in this archive
 - **Demo environment:** local SQLite sandbox
 
-The International Track submission checklist requests technical documentation, a presentation of no more than 10 minutes, source code with a README/GitHub link/deployment instructions/test cases, a security self-assessment, and execution evidence for simulated-account/sandbox operation. The demo video is listed as optional (up to 5 minutes) in the checklist. This README documents the current build; it does not replace the presentation or execution evidence.
-
-Before submission, replace the repository placeholder above and verify that the public repository contains the same source revision as this archive.
 
 ## What Sentrion does
 
@@ -117,8 +114,6 @@ Extraction status can be `QUEUED`, `PROCESSING`, `COMPLETED`, `PARTIAL`, or `FAI
 - **LLM safety:** external AI is off by default. When enabled, extracted document text is sent to the configured provider. Provider output can be wrong, and documents may contain malicious instructions; model output cannot authorize payments.
 - **Payments:** no bank integration exists. Payments are simulated only.
 
-The competition also requires a separate security self-assessment report. That file was not present in the supplied source archive; include the final, reviewed report in the repository before submission and ensure its claims match the actual code and tests.
-
 ## Requirements
 
 - Python 3.11 or newer.
@@ -193,8 +188,6 @@ The application reads `.env` from the project root. Environment variables alread
 | `SENTRION_AI_TOTAL_BUDGET_SECONDS` | Total time budget for provider attempts | `24` |
 | `SENTRION_AI_MAX_RETRIES` | Bounded retry count | `1` |
 
-For Google Gemini, configure the OpenAI-compatible endpoint and model supported by the provider. Do not assume that setting the base URL alone validates the integration. Real provider behavior must be tested separately. Use synthetic documents unless data sharing with the provider is authorized.
-
 ## Local demo accounts
 
 These are seed accounts for **local testing only**:
@@ -204,8 +197,6 @@ These are seed accounts for **local testing only**:
 | Finance Staff | `finance@sentrion.local` | `FinanceDemo!2026` |
 | Supervisor | `supervisor@sentrion.local` | `SupervisorDemo!2026` |
 | Administrator | `admin@sentrion.local` | `AdminDemo!2026` |
-
-Do not expose these credentials on a public service or reuse them outside the local demo. Change the credentials before any shared demonstration environment.
 
 ## Reproducible demo workflow
 
@@ -282,8 +273,6 @@ The team-provided `Test Case.zip` contains local-demo screenshots of registered-
 | UI-09 | Dashboard state for unregistered supplier examples | [Dashboard screenshot](docs/test-cases/screenshots/unregistered_vendors_dashboard.png) |
 
 See [`docs/test-cases/TEST_CASES.md`](docs/test-cases/TEST_CASES.md) for preconditions, steps, expected behavior, limitations, and a retest checklist. See [`docs/test-cases/TEST_CASE_MATRIX.csv`](docs/test-cases/TEST_CASE_MATRIX.csv) for the structured test matrix. [`docs/test-cases/SCREENSHOT_INDEX.csv`](docs/test-cases/SCREENSHOT_INDEX.csv) maps original screenshot filenames to the normalized evidence filenames.
-
-**Evidence caveat:** the screenshots show UI states from the local demo; the ZIP does not include executable Playwright scripts or a test-run log. A screenshot alone does not prove that every action sequence was rerun on the final submission commit. Reproduce the cases in an isolated local SQLite sandbox and record the actual result (`PASS`, `FAIL`, `BLOCKED`, or `NOT RUN`) before using them as fresh execution evidence. The bank-destination mismatch screenshot shows **YELLOW / verification required** in this build; do not describe it as RED unless the implementation and a retest demonstrate that status.
 
 ## Deployment instructions and deployment status
 
