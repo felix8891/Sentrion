@@ -117,7 +117,7 @@ Extraction status can be `QUEUED`, `PROCESSING`, `COMPLETED`, `PARTIAL`, or `FAI
 - **LLM safety:** external AI is off by default. When enabled, extracted document text is sent to the configured provider. Provider output can be wrong, and documents may contain malicious instructions; model output cannot authorize payments.
 - **Payments:** no bank integration exists. Payments are simulated only.
 
-See [`SECURITY_SELF_ASSESSMENT.md`](SECURITY_SELF_ASSESSMENT.md) for a risk-oriented review of implemented controls and known limitations.
+The competition also requires a separate security self-assessment report. That file was not present in the supplied source archive; include the final, reviewed report in the repository before submission and ensure its claims match the actual code and tests.
 
 ## Requirements
 
@@ -243,9 +243,47 @@ Run compilation checks:
 python -m compileall -q app tools_*.py tests
 ```
 
-The suite includes tests for currency/amount parsing, document extraction and risk findings, LLM traceability, vendor resolution, PO relinking and idempotency, database migration compatibility, role authorization, and web workflows. Tests use an isolated database fixture; do not point local tests at a production database.
+The automated suite is organized into seven test modules:
+
+- `tests/test_currency.py` — currency handling and monetary parsing.
+- `tests/test_db_migrations.py` — SQLite migration compatibility and preservation of existing records.
+- `tests/test_extraction_risk.py` — document parsing, extraction behavior, and risk findings.
+- `tests/test_llm_traceability.py` — optional-provider response handling, sanitized traceability, and local fallback behavior.
+- `tests/test_revision_features.py` — regression coverage for the recent extraction, PO-detail, and financial-validation revisions.
+- `tests/test_vendor_resolution.py` — vendor identity resolution, PO relinking, idempotency, and related risk-history behavior.
+- `tests/test_web_workflows.py` — authenticated web workflows, role permissions, approvals, uploads, and audit-facing behavior.
+
+Tests use an isolated database fixture; do not point local tests at a production database. For scenario-level details and manual UI evidence, see [`docs/test-cases/TEST_CASES.md`](docs/test-cases/TEST_CASES.md).
 
 **Verification recorded while preparing this README:** `71 passed` from `python -m pytest -q`, and Python compilation completed successfully on the supplied archive. Re-run both commands on the final submission commit and preserve the terminal output as execution evidence.
+
+## Test cases and execution evidence
+
+The submission includes both **automated regression tests** and **manual UI test-case evidence**. These are separate evidence types and should not be counted interchangeably.
+
+### Automated regression tests
+
+Run `python -m pytest -q` and `python -m compileall -q app tools_*.py tests` as described above. The verification recorded for the source archive documented by this README was **71 pytest tests passed** and a successful Python compilation check. Re-run the commands against the exact final submission commit and preserve the sanitized terminal output.
+
+### Manual UI test cases and screenshots
+
+The team-provided `Test Case.zip` contains local-demo screenshots of registered-vendor and unregistered-vendor workflows. They cover the following visible scenarios:
+
+| Test ID | Scenario | Visible evidence |
+|---|---|---|
+| UI-01 | Dashboard with registered-vendor test records | [Dashboard screenshot](docs/test-cases/screenshots/registered_vendors_dashboard.png) |
+| UI-02 | GREEN invoice — Northstar; invoice fields, PO, line items, bank destination, and document hash | [Invoice summary](docs/test-cases/screenshots/registered_vendor_01_green_invoice_summary.png) · [PO/line items/hash](docs/test-cases/screenshots/registered_vendor_01_payment_po_line_items_hash.png) |
+| UI-03 | GREEN invoice — Harborview Packaging | [Invoice summary](docs/test-cases/screenshots/registered_vendor_02_green_invoice_summary.png) |
+| UI-04 | YELLOW invoice — financial discrepancy / verification required | [Invoice summary](docs/test-cases/screenshots/registered_vendor_03_yellow_verification_summary.png) |
+| UI-05 | RED invoice — AI-directed prompt injection and hard block | [Finding and hard block](docs/test-cases/screenshots/registered_vendor_04_prompt_injection_finding_and_hard_block.png) |
+| UI-06 | YELLOW invoice — payment destination not verified | [Finding and PO match](docs/test-cases/screenshots/registered_vendor_05_bank_destination_finding_po_and_hash.png) |
+| UI-07 | Invoice from a supplier not present in the trusted vendor master | [Extracted fields](docs/test-cases/screenshots/unregistered_vendor_01_invoice_fields_no_trusted_match.png) · [Vendor/PO findings](docs/test-cases/screenshots/unregistered_vendor_01_vendor_and_po_not_found_findings.png) |
+| UI-08 | Additional unregistered supplier scenarios | [Vendor 2](docs/test-cases/screenshots/unregistered_vendor_02_view_1.png) · [Vendor 3](docs/test-cases/screenshots/unregistered_vendor_03_view_1.png) |
+| UI-09 | Dashboard state for unregistered supplier examples | [Dashboard screenshot](docs/test-cases/screenshots/unregistered_vendors_dashboard.png) |
+
+See [`docs/test-cases/TEST_CASES.md`](docs/test-cases/TEST_CASES.md) for preconditions, steps, expected behavior, limitations, and a retest checklist. See [`docs/test-cases/TEST_CASE_MATRIX.csv`](docs/test-cases/TEST_CASE_MATRIX.csv) for the structured test matrix. [`docs/test-cases/SCREENSHOT_INDEX.csv`](docs/test-cases/SCREENSHOT_INDEX.csv) maps original screenshot filenames to the normalized evidence filenames.
+
+**Evidence caveat:** the screenshots show UI states from the local demo; the ZIP does not include executable Playwright scripts or a test-run log. A screenshot alone does not prove that every action sequence was rerun on the final submission commit. Reproduce the cases in an isolated local SQLite sandbox and record the actual result (`PASS`, `FAIL`, `BLOCKED`, or `NOT RUN`) before using them as fresh execution evidence. The bank-destination mismatch screenshot shows **YELLOW / verification required** in this build; do not describe it as RED unless the implementation and a retest demonstrate that status.
 
 ## Deployment instructions and deployment status
 
@@ -295,6 +333,7 @@ Sentrion_MVP_Revised/
   data/                     # runtime database/uploads; keep out of public releases
   examples/                 # synthetic invoice and PO examples
   tests/                    # automated regression tests and fixtures
+  docs/test-cases/           # manual UI test cases, matrix, screenshot evidence
   SECURITY_SELF_ASSESSMENT.md # permission tiers, controls, residual risks
   requirements.txt
   requirements-dev.txt
