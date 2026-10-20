@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ app_name }}{% endblock %} · Sentrion</title>
+  <link rel="stylesheet" href="/static/app.css?v={{ app_version }}">
+  <script defer src="/static/app.js?v={{ app_version }}"></script>
+</head>
+<body>
+{% if user %}
+<div class="app-shell">
+  <aside class="sidebar">
+    <a href="/dashboard" class="brand"><span class="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 27 7v8c0 7-4.7 11.5-11 14-6.3-2.5-11-7-11-14V7z" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m10 16 4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong>Sentrion</strong><small>Finance security</small></span></a>
+    <div class="sidebar-label">WORKSPACE</div>
+    <nav class="side-nav">
+      <a href="/dashboard" class="{% if request.url.path == '/dashboard' %}active{% endif %}"><span>◫</span> Dashboard</a>
+      <a href="/invoices" class="{% if request.url.path.startswith('/invoices') %}active{% endif %}"><span>▤</span> Invoice</a>
+      <a href="/vendors" class="{% if request.url.path.startswith('/vendors') %}active{% endif %}"><span>◉</span> Vendor</a>
+      <a href="/purchase-orders" class="{% if request.url.path.startswith('/purchase-orders') %}active{% endif %}"><span>▧</span> Purchase Order</a>
+      <a href="/approvals" class="{% if request.url.path.startswith('/approvals') %}active{% endif %}"><span>✓</span> Approval</a>
+      <a href="/audits" class="{% if request.url.path.startswith('/audits') %}active{% endif %}"><span>≡</span> Audit Trail</a>
+    </nav>
+    <div class="sidebar-spacer"></div>
+    <div class="sidebar-security"><span class="status-dot"></span><div><strong>Simulation mode</strong><small>No real money transfers</small></div></div>
+    <div class="sidebar-user"><div class="avatar">{{ (user.name or 'S')[0]|upper }}</div><div class="user-meta"><strong>{{ user.name }}</strong><small>{{ user.role|replace('_',' ')|title }}</small></div><form method="post" action="/logout"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="logout-btn" title="Log out" aria-label="Log out">↗</button></form></div>
+  </aside>
+  <main class="main-shell">
+    <header class="topbar"><div class="breadcrumbs">Workspace <span>/</span> {% block breadcrumb %}Dashboard{% endblock %}</div><div class="topbar-right"><span class="demo-pill"><span></span> LOCAL DEMO</span><div class="top-avatar">{{ (user.name or 'S')[0]|upper }}</div></div></header>
+    <div class="page-wrap">
+      {% if flash_error %}<div class="alert alert-danger"><strong>Needs attention</strong><span>{{ flash_error|ui_text }}</span></div>{% endif %}
+      {% if flash_success %}<div class="alert alert-success"><strong>Success</strong><span>{{ flash_success|ui_text }}</span></div>{% endif %}
+      {% block content %}{% endblock %}
+      <footer class="app-footer"><span>Sentrion MVP · {{ app_version }}</span><span>AI analyzes; personnel authorize.</span></footer>
+    </div>
+  </main>
+</div>
+{% else %}
+  {% block auth_content %}{% endblock %}
+{% endif %}
+</body></html>

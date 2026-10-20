@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Sign in{% endblock %}
+{% block auth_content %}
+<div class="login-page">
+  <div class="login-art">
+    <a href="/login" class="brand brand-light"><span class="brand-mark"><svg viewBox="0 0 32 32"><path d="M16 3 27 7v8c0 7-4.7 11.5-11 14-6.3-2.5-11-7-11-14V7z" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m10 16 4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4"/></svg></span><span><strong>Sentrion</strong><small>Finance security</small></span></a>
+    <div class="login-art-content"><div class="eyebrow eyebrow-light">SECURE INVOICE OPERATIONS</div><h1>More controlled financial decisions.</h1><p>Process invoices, detect anomalies, and present evidence before personnel approval.</p><div class="mini-flow"><span>Invoice</span><b>→</b><span>Verification</span><b>→</b><span>Approval</span></div></div>
+    <div class="login-art-foot">AI analyzes. Authority remains with people.</div>
+  </div>
+  <div class="login-panel"><div class="login-card"><div class="eyebrow">WELCOME</div><h2>Sign in to Sentrion</h2><p class="muted">Use a local demo account to access the dashboard.</p>
+    {% if error %}<div class="alert alert-danger"><span>{{ error }}</span></div>{% endif %}
+    <form method="post" action="/login" class="stack-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Email<input name="email" type="email" required autocomplete="username" placeholder="name@sentrion.local"></label><label>Password<input name="password" type="password" required autocomplete="current-password" placeholder="Enter your password"></label><button class="btn btn-primary btn-lg" type="submit">Sign in to dashboard <span>→</span></button></form>
+    <div class="demo-credentials"><strong>Demo accounts</strong><p>Finance: <code>finance@sentrion.local</code><br>Supervisor: <code>supervisor@sentrion.local</code><br>Admin: <code>admin@sentrion.local</code></p><small>Demo passwords are listed in the local README. Do not use these accounts in production.</small></div>
+  </div></div>
+</div>
+{% endblock %}

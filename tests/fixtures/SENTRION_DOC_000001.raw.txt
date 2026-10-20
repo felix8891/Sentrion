@@ -1,0 +1,124 @@
+UD Pusaka Persada Prima
+COMMERCIAL INVOICE
+Invoice No.: 26-SI-000001
+Invoice Date: May 16, 2026
+Due Date: May 30, 2026
+SUPPLIER
+UD Pusaka Persada Prima
+Jalan Merdeka No. 16, Batam 50241, Indonesia
+Tax Registration No.: TR-ID-33658-0063
+BILL TO
+CV Delta Trading Raya
+Jalan Gatot Subroto No. 134, Denpasar 50241,
+Indonesia
+Tax Registration No.: TR-ID-31755-2032
+PURCHASE ORDER
+PUR/26/12604
+PAYMENT TERMS
+Net 14
+CURRENCY
+IDR
+No.
+Product / Pack
+SKU
+Unit
+Qty
+Unit Price
+Line Total
+Discount
+GST
+1
+Cake Flour 25 kg
+FLR-010
+sack
+8
+IDR 375,732
+IDR 3,169,675
+IDR 150,293
+IDR 314,112
+2
+Bread Flour 25 kg
+FLR-005
+sack
+10
+IDR 331,863
+IDR 3,315,311
+IDR 331,863
+IDR 328,544
+3
+Sweetener Blend 5 kg
+SGR-048
+bag
+3
+IDR 84,239
+IDR 280,516
+IDR 0
+IDR 27,799
+4
+Black Pepper Ground 100 g
+SEA-001
+pack
+8
+IDR 18,956
+IDR 168,329
+IDR 0
+IDR 16,681
+5
+Corn Syrup Solids 1 kg
+SGR-042
+bag
+15
+IDR 23,074
+IDR 353,447
+IDR 27,689
+IDR 35,026
+6
+Garlic Powder 10 kg
+SEA-010
+sack
+10
+IDR 1,755,314
+IDR 19,483,985
+IDR 0
+IDR 1,930,845
+7
+Butter Oil Substitute 200 L
+OIL-040
+drum
+5
+IDR 2,828,642
+IDR 14,914,014
+IDR 707,161
+IDR 1,477,965
+8
+Milk Tea Powder 1 L
+SYR-037
+bottle
+8
+IDR 40,130
+IDR 320,719
+IDR 32,104
+IDR 31,783
+NOTES
+Please notify us of any discrepancy within
+seven days.
+Payment reference
+REM/26/72180
+Payment Terms: Net 14
+Subtotal
+IDR 39,092,351
+Item discounts
+- IDR 1,249,110
+Taxable amount
+IDR 37,843,241
+GST total
+IDR 4,162,755
+Shipping
+IDR 0
+Other charges
+IDR 0
+Rounding
+IDR 0
+AMOUNT DUE
+IDR 42,005,996
+Page 1 of 1

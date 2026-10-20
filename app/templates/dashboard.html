@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block breadcrumb %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-heading"><div><div class="eyebrow">OVERVIEW</div><h1>Financial Overview</h1><p>Monitor the invoice queue, risk status, and recent activity.</p></div><a class="btn btn-primary" href="/invoices">View invoices <span>→</span></a></div>
+<div class="notice notice-blue"><span class="notice-icon">ⓘ</span><div><strong>Demo environment</strong><p>Vendor and invoice data are synthetic. Payments are simulated only; no real money is transferred. {% if external_ai_configured %}External LLM extraction is configured; document text may be sent to that provider.{% else %}The default mode uses a local parser + OCR; external LLM is disabled.{% endif %}</p></div><span class="notice-tag">LOCAL DEMO</span></div>
+<div class="stats-grid">
+  <div class="stat-card"><div class="stat-top"><span>Total invoices</span><span class="stat-icon blue">▤</span></div><strong>{{ counts.total }}</strong><small>Stored invoices</small></div>
+  <div class="stat-card"><div class="stat-top"><span>Queue</span><span class="stat-icon violet">◷</span></div><strong>{{ counts.queued }}</strong><small>Queued / processing</small></div>
+  <div class="stat-card"><div class="stat-top"><span>GREEN</span><span class="stat-icon green">✓</span></div><strong>{{ counts.green }}</strong><small>Ready for personnel review</small></div>
+  <div class="stat-card"><div class="stat-top"><span>YELLOW</span><span class="stat-icon amber">!</span></div><strong>{{ counts.yellow }}</strong><small>Additional verification required</small></div>
+  <div class="stat-card"><div class="stat-top"><span>RED</span><span class="stat-icon red">⊘</span></div><strong>{{ counts.red }}</strong><small>Blocked / under investigation</small></div>
+</div>
+<div class="content-grid">
+  <section class="card"><div class="card-header"><div><h2>Recent invoices</h2><p>Summary of the most recently received documents.</p></div><a href="/invoices" class="text-link">View all →</a></div>
+    <div class="table-wrap"><table><thead><tr><th>Invoice / Vendor</th><th>Total</th><th>Risk</th><th>Extraction</th><th></th></tr></thead><tbody>
+    {% for inv in recent %}<tr><td><strong>{{ inv.invoice_number or 'Invoice number not extracted' }}</strong><small class="table-sub">{{ inv.vendor_company_name or 'Vendor not recognized' }}</small></td><td class="money">{% if inv.total is not none %}{{ inv.total|money(inv.currency) }}{% else %}<span class="muted">Not extracted</span>{% endif %}</td><td><span class="risk-pill risk-{{ inv.risk_level|lower }}">{{ inv.risk_level }}</span></td><td><span class="mini-status">{{ inv.extraction_status|replace('_',' ')|title }}</span>{% if inv.processing_status in ['QUEUED','PROCESSING'] %}<small class="table-sub">Job: {{ inv.processing_status|title }}</small>{% endif %}</td><td><a class="icon-link" href="/invoices/{{ inv.id }}">↗</a></td></tr>{% endfor %}
+    </tbody></table></div>
+  </section>
+  <section class="card"><div class="card-header"><div><h2>Audit activity</h2><p>Latest system events.</p></div><a href="/audits" class="text-link">Audit trail →</a></div>
+    <div class="timeline-list">{% for ev in events %}<div class="timeline-item"><span class="timeline-dot {% if ev.event_result in ['BLOCKED','FAILED','REJECTED'] %}dot-red{% elif ev.event_result in ['SUCCESS','APPROVED','SIMULATED_SUCCESS'] %}dot-green{% else %}dot-amber{% endif %}"></span><div class="timeline-content"><strong>{{ ev.event_type|replace('_',' ')|title }}</strong><p>{{ (ev.event_reason or ev.event_result)|ui_text }}</p><small>{{ (ev.actor_name or 'System')|ui_text }} · {{ ev.created_at|replace('T',' ') }}</small></div></div>{% else %}<p class="empty-state">No recent activity.</p>{% endfor %}</div>
+  </section>
+</div>
+<div class="feature-strip"><div><span class="strip-icon">⌁</span><div><strong>AI has no payment authority</strong><p>The risk engine and policy engine are separate from the LLM. Personnel retain approval authority.</p></div></div><div><span class="strip-icon">⛨</span><div><strong>Evidence-based risk assessment</strong><p>Every alert must reference a finding and a relevant data source.</p></div></div></div>
+{% endblock %}
